@@ -2,8 +2,11 @@ package it.scompo.mydbtest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
-import java.sql.*;
 
 /**
  * Used to access the database.
@@ -40,16 +43,46 @@ public class DBInterface {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+
 		}
 	}
 
+	public void createTable(String query){
+		Connection con= openConnection();
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(query);
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 	
-	public void getProperties(){
+	private Connection openConnection() {
+		getProperties();
+		try {
+			return DriverManager.getConnection(
+					props.getProperty("db.url"),
+					props.getProperty("db.user"),
+					props.getProperty("db.password"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
+	}
+
+	private void getProperties(){
 		try {
 			props=loadDBProperties(DB_PROPERTIES_NAME);
-			System.err.println(props);
+			//System.err.println(props);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	
