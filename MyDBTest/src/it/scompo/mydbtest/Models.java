@@ -23,10 +23,4 @@ public interface Models {
 	 */
 	void update();
 	
-	/**
-	 * Reads the data from the db.
-	 * @return 
-	 */
-	Models getModel(Object key);
-	
 }

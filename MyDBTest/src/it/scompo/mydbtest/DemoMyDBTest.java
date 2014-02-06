@@ -19,18 +19,18 @@ public class DemoMyDBTest {
 		model.first ="test_first";
 		model.second ="test_second";
 		model.create();
-		List<Models> a = model.readAll();
+		List<Models> a = TestModel.readAll();
 		for(Models m : a){
 			System.out.println(m);
 		}
-		TestModel ricercato = (TestModel)model.getModel(new Integer(1));
+		TestModel ricercato = (TestModel)TestModel.getModel(new Integer(1));
 		System.out.println(ricercato);
 		ricercato.first="test";
 		ricercato.second="test2";
 		ricercato.update();
 		System.out.println(ricercato);
 		ricercato.delete();
-		a = model.readAll();
+		a = TestModel.readAll();
 		for(Models m : a){
 			System.out.println(m);
 		}

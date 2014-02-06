@@ -93,7 +93,7 @@ public class DBInterface {
 		}
 	}
 	
-	public synchronized List<Map<String, Object>> executeQuery(Models m,String query){
+	public synchronized List<Map<String, Object>> executeQuery(String query){
 		System.out.println(query);
 		List<Map<String, Object>> all = new ArrayList<Map<String, Object>>();
 		Connection con=openConnection();

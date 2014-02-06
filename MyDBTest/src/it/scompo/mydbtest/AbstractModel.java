@@ -15,20 +15,17 @@ public abstract class AbstractModel implements Models {
 	/**
 	 * The database associated.
 	 */
-	protected DBInterface db;
+	protected static DBInterface db;
 	
 	/**
-	 * The table declaration.
+	 * The database name.
 	 */
-	
-	//public Table table;
-	
 	public static String name;
 	
 	/**
 	 * Queries of the table.
 	 */
-	public Map<String, String> queries;
+	public static Map<String, String> queries;
 	
 	/**
 	 * Constructor.
@@ -37,42 +34,15 @@ public abstract class AbstractModel implements Models {
 		db=DBInterface.getInstance();
 		queries=new LinkedHashMap<>();
 		createTableDefinition();
-		//table=new Table();
 	}
 	
 	/**
 	 * Creates the table.
 	 */
 	public void executeCreateTable(String name){
-		//table.setName(name);
 		createTableInDB();
 	}
 
-	/**
-	 * Executes an insert query to the db.
-	 */
-	public abstract void executeCreate();
-	
-	/**
-	 * Executes an update query to the db.
-	 */
-	public abstract void executeUpdate();
-	
-	/**
-	 * Executes a delete query to the db.
-	 */
-	public abstract void executeDelete();
-	
-	/**
-	 * Executes a query to the db.
-	 */
-	public abstract void executeQuery();
-	
-	/**
-	 * Create a table.
-	 */
-	public abstract void createTable();
-	
 	/**
 	 * Table definition must be implemented for each model.
 	 * @param name the name of the table
