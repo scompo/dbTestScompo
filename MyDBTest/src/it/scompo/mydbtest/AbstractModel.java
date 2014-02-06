@@ -1,5 +1,8 @@
 package it.scompo.mydbtest;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 /**
  * A base implementation of models interface.
@@ -18,23 +21,32 @@ public abstract class AbstractModel implements Models {
 	 * The table declaration.
 	 */
 	
-	protected static Table table;
+	//public Table table;
 	
+	public String name;
+	
+	/**
+	 * Queries of the table.
+	 */
+	public Map<String, String> queries;
 	
 	/**
 	 * Constructor.
 	 */
-	public AbstractModel(String name){
+	public AbstractModel(){
 		db=DBInterface.getInstance();
-		table=new Table(name);
-		createTableDefinition(name);
-		executeCreateTable();
+		queries=new LinkedHashMap<>();
+		//table=new Table();
 	}
 	
 	/**
 	 * Creates the table.
 	 */
-	public abstract void executeCreateTable();
+	public void executeCreateTable(String name){
+		//table.setName(name);
+		createTableDefinition(name);
+		createTableInDB();
+	}
 
 	/**
 	 * Executes an insert query to the db.
@@ -59,7 +71,7 @@ public abstract class AbstractModel implements Models {
 	/**
 	 * Create a table.
 	 */
-	//public abstract void createTable();
+	public abstract void createTable();
 	
 	/**
 	 * Table definition must be implemented for each model.
@@ -69,6 +81,11 @@ public abstract class AbstractModel implements Models {
 		createFields();
 		createQueries();
 	}
+	
+	/**
+	 * Creates the table in the db.
+	 */
+	public abstract void createTableInDB();
 	
 	/**
 	 * You must create fields.

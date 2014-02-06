@@ -18,9 +18,28 @@ public class Field {
 	private String name;
 	
 	/**
+	 * The value of the object.
+	 */
+	private Object value;
+	
+	/**
 	 * The properties.
 	 */
-	private Map<String, String> properties;
+	private static Map<String, String> properties;
+
+	/**
+	 * @return the value
+	 */
+	public Object getValue() {
+		return value;
+	}
+
+	/**
+	 * @param value the value to set
+	 */
+	public void setValue(Object value) {
+		this.value = value;
+	}
 
 	/**
 	 * Constructor with name.

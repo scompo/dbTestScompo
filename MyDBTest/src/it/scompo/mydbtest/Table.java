@@ -24,7 +24,7 @@ public class Table {
 	/**
 	 * Table names and type for the model, must be defined.
 	 */
-	private Map<String, Field> fields;
+	//private Map<String, Field> fields;
 
 	/**
 	 * Queries of the table.
@@ -56,7 +56,7 @@ public class Table {
 	 */
 	public Table(){
 		queries=new LinkedHashMap<String,String>();
-		fields = new LinkedHashMap<String, Field>();
+		//fields = new LinkedHashMap<String, Field>();
 	}
 			
 	/**
@@ -91,22 +91,22 @@ public class Table {
 	 * Insert a new field.
 	 * 
 	 * @param field the field to insert.
-	 */
+	 *
 	public void putField(Field field) {
 		fields.put(field.getName(),field);
-	}
+	}*/
 	
 	/**
 	 * Get a field.
 	 * 
 	 * @param name the name of the field.
 	 * @return the field.
-	 */
+	 *
 	public Field getField(String name) {
 		return fields.get(name);
 	}
 	
 	public Map<String, Field> getFields() {
 		return fields;
-	}
+	}*/
 }

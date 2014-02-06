@@ -1,11 +1,20 @@
 package it.scompo.mydbtest;
 
+import it.scompo.mydbtest.models.TestModel;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -57,7 +66,7 @@ public class DBInterface {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.exit(1);
+			//System.exit(1);
 		}
 	}
 	
@@ -84,6 +93,50 @@ public class DBInterface {
 			e.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	public synchronized List<Map<String, Object>> executeQuery(Models m,String query){
+		System.out.println(query);
+		List<Map<String, Object>> all = new ArrayList<Map<String, Object>>();
+		Connection con=openConnection();
+		try {
+			Statement st = con.createStatement();
+			ResultSet resData = st.executeQuery(query);
+			ResultSetMetaData resMeta = resData.getMetaData();
+			int columns = resMeta.getColumnCount();
+			while (resData.next()) {
+				Map<String, Object> row = new LinkedHashMap<String, Object>();
+				for (int i = 1; i <=columns; i++) {
+					row.put(resMeta.getColumnName(i), resData.getObject(i));
+				}	
+				all.add(row);
+				System.out.println(row);
+			}
+			st.close();
+			con.close();
+			return all;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
+	}
+	
+	public synchronized void executeUpdate(String query){
+		System.out.println(query);
+		Connection con=openConnection();
+		try {
+			Statement st = con.createStatement();
+			st.executeUpdate(query);
+			st.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 	}
 	
 	/**

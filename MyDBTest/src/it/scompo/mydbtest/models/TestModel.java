@@ -1,6 +1,10 @@
 package it.scompo.mydbtest.models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -15,18 +19,26 @@ import it.scompo.mydbtest.Models;
 public class TestModel extends AbstractModel {
 	
 	//Fields
-	Field id = new Field("id");
-	Field first = new Field("first");
-	Field second = new Field("second");
+	public Integer id;
+	public String first;
+	public String second;
 	
 	//Queries.
-	
-	
+		
 	/**
 	 * Constructor.
 	 */
-	public TestModel(String name) {
-		super(name);
+	public TestModel() {
+		super();
+		name = "test";
+		//table.setName(name);
+	}
+	
+	public TestModel(int id,String first,String second){
+		this();
+		this.id=id;
+		this.first=first;
+		this.second=second;
 	}
 	
 	/* (non-Javadoc)
@@ -34,8 +46,21 @@ public class TestModel extends AbstractModel {
 	 */
 	@Override
 	public void create() {
-		// TODO Auto-generated method stub
-
+		/*StringBuilder values = new StringBuilder();
+		Map<String, Field> fields = table.getFields();
+		Iterator<Map.Entry<String, Field>> iterator = fields.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<String,Field> fieldEntry = iterator.next();
+			if(fieldEntry.getValue()==table.getId()){
+				fieldEntry = iterator.next();
+			}
+			values.append(fieldEntry.getValue().getValue());
+			if(iterator.hasNext()){
+				values.append(", ");
+			}
+		}
+		values.append(");");*/
+		db.executeUpdate(queries.get("insert")+" \'"+first+"\', \'"+second+"\');");
 	}
 
 	/* (non-Javadoc)
@@ -102,30 +127,30 @@ public class TestModel extends AbstractModel {
 	
 	@Override
 	public void createFields() {
-		Field id = new Field("id");
+		/*Field id = new Field("id");
 		Field first = new Field("first");
 		Field second = new Field("second");
-		id.putProperty("type", "serial primary key not null");
-		first.putProperty("type", "text not null");
-		second.putProperty("type", "text not null");
+		id.putProperty("type", "serial");
+		first.putProperty("type", "text");
+		second.putProperty("type", "text");
 		table.putField(id);
 		table.setId(id);
 		table.putField(first);
-		table.putField(second);
+		table.putField(second);*/
 	}
 
 	@Override
 	public void createQueries() {
-		table.putQuery("create_table", createQueryCreateTable());
-		table.putQuery("insert", createQueryInsert());
-		table.putQuery("select","SELECT * FROM "+table.getName()+";");
-		table.putQuery("delete",createQueryDelete());
+		queries.put("create_table", createQueryCreateTable());
+		queries.put("insert", createQueryInsert());
+		queries.put("select_all","SELECT * FROM "+name+";");
+		queries.put("delete",createQueryDelete());
 	}
 	
 
 	private String createQueryDelete() {
-		return "DELETE FROM "+table.getName()+
-				" WHERE "+table.getId().getName()+" = ?;";
+		return "DELETE FROM "+name+
+				" WHERE "+id+" = ?;";
 	}
 
 	/**
@@ -134,9 +159,11 @@ public class TestModel extends AbstractModel {
 	 * @return the insert query.
 	 */
 	private String createQueryInsert() {
-		StringBuilder queryInsert = new StringBuilder();
+		return "INSERT INTO " + name+ 
+				"(first,second) VALUES(";
+		/*StringBuilder queryInsert = new StringBuilder();
 		queryInsert.append("INSERT INTO " + table.getName()+ "(");
-		StringBuilder values = new StringBuilder();
+		//StringBuilder values = new StringBuilder();
 		Map<String, Field> fields = table.getFields();
 		Iterator<Map.Entry<String, Field>> iterator = fields.entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -145,16 +172,16 @@ public class TestModel extends AbstractModel {
 				fieldEntry = iterator.next();
 			}
 			queryInsert.append(fieldEntry.getValue().getName());
-			values.append("?");
+			//values.append("?");
 			if(iterator.hasNext()){
 				queryInsert.append(", ");
-				values.append(", ");
+				//values.append(", ");
 			}
 		}
 		queryInsert.append(") VALUES (");
-		queryInsert.append(values);
-		queryInsert.append(");");
-		return queryInsert.toString();
+		//queryInsert.append(values);
+		//queryInsert.append(");");
+		return queryInsert.toString();*/
 	}
 
 	/**
@@ -163,7 +190,9 @@ public class TestModel extends AbstractModel {
 	 * @return Create table query.
 	 */
 	private String createQueryCreateTable() {
-		StringBuilder queryCreateTable = new StringBuilder();
+		return "CREATE TABLE " + name+ 
+				" (id serial, first text, second text);";
+		/*StringBuilder queryCreateTable = new StringBuilder();
 		queryCreateTable.append("CREATE TABLE " + table.getName()+ " (");
 		Map<String, Field> fields = table.getFields();
 		Iterator<Map.Entry<String, Field>> iterator = fields.entrySet().iterator();
@@ -174,14 +203,52 @@ public class TestModel extends AbstractModel {
 			}
 		}
 		queryCreateTable.append(");");
-		return queryCreateTable.toString();
+		return queryCreateTable.toString();*/
 	}
 
 	@Override
-	public void executeCreateTable() {
-		db.createTable(table.getQuery("create_table"));
+	public void createTableInDB() {
+		createTableDefinition("name");
+		db.createTable(queries.get("create_table"));
+		
 	}
 
+	public List<Models> readAll() {
+		List<Models> all = new ArrayList<Models>();
+		Integer tempId;
+		String tempFirst,tempSecond;
+		TestModel temp;
+		List<Map<String, Object>> listTemp= db.executeQuery(this,queries.get("select_all"));
+			for(Map<String, Object> data : listTemp){
+				tempId = (Integer)data.get("id");
+				tempFirst = (String)data.get("first");
+				tempSecond = (String)data.get("second");
+				temp= new TestModel(tempId,tempFirst,tempSecond);
+				all.add(temp);
+		}
+		System.out.println(all);
+		return all;
+	}
+	
+	
+	
+	@Override
+	public void createTable() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public Models getNew(ResultSet rs) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * 
+	 */
+	public String toString(){
+		return name +" ["+id + "," + first + "," + second+"]";
+	}
 
 }

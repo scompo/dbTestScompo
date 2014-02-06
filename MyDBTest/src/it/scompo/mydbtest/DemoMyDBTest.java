@@ -1,5 +1,7 @@
 package it.scompo.mydbtest;
 
+import java.util.List;
+
 import it.scompo.mydbtest.models.TestModel;
 
 /**
@@ -12,8 +14,15 @@ public class DemoMyDBTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		TestModel model = new TestModel("TestModel");
-		
+		TestModel model = new TestModel();
+		model.createTableInDB();
+		model.first ="test_first";
+		model.second ="test_second";
+		model.create();
+		List<Models> a = model.readAll();
+		for(Models m : a){
+			System.out.println(m);
+		}
 	}
 
 }
