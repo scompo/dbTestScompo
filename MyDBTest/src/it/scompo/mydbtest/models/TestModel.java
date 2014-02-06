@@ -1,15 +1,10 @@
 package it.scompo.mydbtest.models;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import it.scompo.mydbtest.AbstractModel;
-import it.scompo.mydbtest.Field;
 import it.scompo.mydbtest.Models;
 
 /**
@@ -80,14 +75,43 @@ public class TestModel extends AbstractModel {
 		// TODO Auto-generated method stub
 
 	}
-
-	/* (non-Javadoc)
-	 * @see it.scompo.mydbtest.Models#read()
-	 */
+	
 	@Override
-	public Models read() {
-		// TODO Auto-generated method stub
-		return null;
+	public Models getModel(Object key) {
+		Integer tempId;
+		String tempFirst,tempSecond;
+		TestModel temp=null;
+		List<Map<String, Object>> listTemp= db.executeQuery(this,
+				queries.get("select_single")+key+";");
+		for(Map<String, Object> data : listTemp){
+			tempId = (Integer)data.get("id");
+			tempFirst = (String)data.get("first");
+			tempSecond = (String)data.get("second");
+			temp= new TestModel(tempId,tempFirst,tempSecond);
+		}
+		return temp;
+	}
+
+	/**
+	 * Read all the data.
+	 * 
+	 * @return a list of all the models.
+	 */
+	public List<Models> readAll() {
+		List<Models> all = new ArrayList<Models>();
+		Integer tempId;
+		String tempFirst,tempSecond;
+		TestModel temp;
+		List<Map<String, Object>> listTemp= db.executeQuery(this,queries.get("select_all"));
+			for(Map<String, Object> data : listTemp){
+				tempId = (Integer)data.get("id");
+				tempFirst = (String)data.get("first");
+				tempSecond = (String)data.get("second");
+				temp= new TestModel(tempId,tempFirst,tempSecond);
+				all.add(temp);
+		}
+		System.out.println(all);
+		return all;
 	}
 
 	/* (non-Javadoc)
@@ -144,6 +168,7 @@ public class TestModel extends AbstractModel {
 		queries.put("create_table", createQueryCreateTable());
 		queries.put("insert", createQueryInsert());
 		queries.put("select_all","SELECT * FROM "+name+";");
+		queries.put("select_single", "SELECT * FROM "+name+" WHERE id=");
 		queries.put("delete",createQueryDelete());
 	}
 	
@@ -213,22 +238,7 @@ public class TestModel extends AbstractModel {
 		
 	}
 
-	public List<Models> readAll() {
-		List<Models> all = new ArrayList<Models>();
-		Integer tempId;
-		String tempFirst,tempSecond;
-		TestModel temp;
-		List<Map<String, Object>> listTemp= db.executeQuery(this,queries.get("select_all"));
-			for(Map<String, Object> data : listTemp){
-				tempId = (Integer)data.get("id");
-				tempFirst = (String)data.get("first");
-				tempSecond = (String)data.get("second");
-				temp= new TestModel(tempId,tempFirst,tempSecond);
-				all.add(temp);
-		}
-		System.out.println(all);
-		return all;
-	}
+
 	
 	
 	
@@ -237,18 +247,14 @@ public class TestModel extends AbstractModel {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public Models getNew(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	/**
-	 * 
+	 * To string representation of the model. 
 	 */
 	public String toString(){
 		return name +" ["+id + "," + first + "," + second+"]";
 	}
+
+
 
 }

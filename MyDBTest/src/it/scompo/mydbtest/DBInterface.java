@@ -146,7 +146,8 @@ public class DBInterface {
 	 * @return The data.
 	 */
 	public Models getDataFromDB(Models model){
-		return model.read();
+		//return model.read();
+		return null;
 	}
 	
 	/**

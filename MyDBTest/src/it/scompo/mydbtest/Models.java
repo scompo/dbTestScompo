@@ -1,8 +1,5 @@
 package it.scompo.mydbtest;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 /**
  * Implements the interface of the various models.
  * 
@@ -30,7 +27,6 @@ public interface Models {
 	 * Reads the data from the db.
 	 * @return 
 	 */
-	Models read();
+	Models getModel(Object key);
 	
-	Models getNew(ResultSet rs) throws SQLException;
 }
