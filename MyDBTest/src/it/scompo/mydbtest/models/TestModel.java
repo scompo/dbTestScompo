@@ -64,8 +64,7 @@ public class TestModel extends AbstractModel {
 	 */
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-
+		db.executeUpdate(queries.get("delete")+id+";");
 	}
 
 	/* (non-Javadoc)
@@ -78,7 +77,7 @@ public class TestModel extends AbstractModel {
 	}
 	
 	@Override
-	public Models getModel(Object key) {
+	public synchronized Models getModel(Object key) {
 		Integer tempId;
 		String tempFirst,tempSecond;
 		TestModel temp=null;
@@ -98,7 +97,7 @@ public class TestModel extends AbstractModel {
 	 * 
 	 * @return a list of all the models.
 	 */
-	public List<Models> readAll() {
+	public synchronized List<Models> readAll() {
 		List<Models> all = new ArrayList<Models>();
 		Integer tempId;
 		String tempFirst,tempSecond;
@@ -176,8 +175,7 @@ public class TestModel extends AbstractModel {
 	
 
 	private String createQueryDelete() {
-		return "DELETE FROM "+name+
-				" WHERE "+id+" = ?;";
+		return "DELETE FROM "+name+" WHERE id=";
 	}
 
 	/**

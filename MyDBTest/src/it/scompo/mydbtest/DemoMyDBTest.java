@@ -29,6 +29,11 @@ public class DemoMyDBTest {
 		ricercato.second="test2";
 		ricercato.update();
 		System.out.println(ricercato);
+		ricercato.delete();
+		a = model.readAll();
+		for(Models m : a){
+			System.out.println(m);
+		}
 	}
 
 }
