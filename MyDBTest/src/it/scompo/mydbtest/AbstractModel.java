@@ -1,6 +1,8 @@
 package it.scompo.mydbtest;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,12 +29,15 @@ public abstract class AbstractModel implements Models {
 	 */
 	public static Map<String, String> queries;
 	
+	public static List<Map<String, Object>> fields;
+	
 	/**
 	 * Constructor.
 	 */
 	public AbstractModel(){
 		db=DBInterface.getInstance();
 		queries=new LinkedHashMap<>();
+		fields = new ArrayList<Map<String,Object>>();
 		createTableDefinition();
 	}
 	
@@ -48,7 +53,6 @@ public abstract class AbstractModel implements Models {
 	 * @param name the name of the table
 	 */
 	public void createTableDefinition(){
-		createFields();
 		createQueries();
 	}
 	
@@ -56,11 +60,6 @@ public abstract class AbstractModel implements Models {
 	 * Creates the table in the db.
 	 */
 	public abstract void createTableInDB();
-	
-	/**
-	 * You must create fields.
-	 */
-	public abstract void createFields();
 	
 	/**
 	 * You must add queries.

@@ -37,7 +37,7 @@ public class TestModel extends AbstractModel {
 	 * Create a new model.
 	 */
 	@Override
-	public void create() {
+	public synchronized void create() {
 		db.executeUpdate(queries.get("insert")+" \'"+first+"\', \'"+second+"\');");
 	}
 	
@@ -98,11 +98,6 @@ public class TestModel extends AbstractModel {
 	}
 
 	@Override
-	public void createFields() {
-	
-	}
-
-	@Override
 	public void createQueries() {
 		queries.put("create_table", createQueryCreateTable());
 		queries.put("insert", createQueryInsert());
@@ -139,7 +134,7 @@ public class TestModel extends AbstractModel {
 
 	@Override
 	public void createTableInDB() {
-		createTableDefinition();
+		//createTableDefinition();
 		db.createTable(queries.get("create_table"));
 	}
 
