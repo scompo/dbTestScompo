@@ -23,7 +23,11 @@ public class DemoMyDBTest {
 		for(Models m : a){
 			System.out.println(m);
 		}
-		Models ricercato = model.getModel(new Integer(1));
+		TestModel ricercato = (TestModel)model.getModel(new Integer(1));
+		System.out.println(ricercato);
+		ricercato.first="test";
+		ricercato.second="test2";
+		ricercato.update();
 		System.out.println(ricercato);
 	}
 

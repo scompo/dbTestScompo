@@ -17,6 +17,7 @@ public class TestModel extends AbstractModel {
 	public Integer id;
 	public String first;
 	public String second;
+
 	
 	//Queries.
 		
@@ -71,9 +72,9 @@ public class TestModel extends AbstractModel {
 	 * @see it.scompo.mydbtest.Models#update()
 	 */
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
+	public synchronized void update() {
+		db.executeUpdate(queries.get("update")+"first=\'"+first+"\' WHERE id="+id+";");
+		db.executeUpdate(queries.get("update")+"second=\'"+second+"\' WHERE id="+id+";");
 	}
 	
 	@Override
@@ -169,6 +170,7 @@ public class TestModel extends AbstractModel {
 		queries.put("insert", createQueryInsert());
 		queries.put("select_all","SELECT * FROM "+name+";");
 		queries.put("select_single", "SELECT * FROM "+name+" WHERE id=");
+		queries.put("update", "UPDATE "+name+" SET ");
 		queries.put("delete",createQueryDelete());
 	}
 	
@@ -233,9 +235,8 @@ public class TestModel extends AbstractModel {
 
 	@Override
 	public void createTableInDB() {
-		createTableDefinition("name");
+		createTableDefinition();
 		db.createTable(queries.get("create_table"));
-		
 	}
 
 

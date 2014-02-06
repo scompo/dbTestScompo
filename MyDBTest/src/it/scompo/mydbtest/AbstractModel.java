@@ -23,7 +23,7 @@ public abstract class AbstractModel implements Models {
 	
 	//public Table table;
 	
-	public String name;
+	public static String name;
 	
 	/**
 	 * Queries of the table.
@@ -36,6 +36,7 @@ public abstract class AbstractModel implements Models {
 	public AbstractModel(){
 		db=DBInterface.getInstance();
 		queries=new LinkedHashMap<>();
+		createTableDefinition();
 		//table=new Table();
 	}
 	
@@ -44,7 +45,6 @@ public abstract class AbstractModel implements Models {
 	 */
 	public void executeCreateTable(String name){
 		//table.setName(name);
-		createTableDefinition(name);
 		createTableInDB();
 	}
 
@@ -77,7 +77,7 @@ public abstract class AbstractModel implements Models {
 	 * Table definition must be implemented for each model.
 	 * @param name the name of the table
 	 */
-	public void createTableDefinition(String name){
+	public void createTableDefinition(){
 		createFields();
 		createQueries();
 	}

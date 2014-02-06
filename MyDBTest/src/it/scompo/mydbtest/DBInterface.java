@@ -1,6 +1,5 @@
 package it.scompo.mydbtest;
 
-import it.scompo.mydbtest.models.TestModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +10,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
